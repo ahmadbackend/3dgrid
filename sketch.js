@@ -2,6 +2,9 @@ var confLocs=[];
 var confTheta=[];
 var downer;
 var setter;
+var redSlider;
+var greenSlider;
+var blueSlider;
 function setup() {
     createCanvas(900, 800, WEBGL);
     angleMode(DEGREES);
@@ -15,7 +18,19 @@ function setup() {
         confTheta.push(random(0,360));
 
     }
-   //console.log(confLocs[2].z);
+   //cubic color sliders
+   /*  need a method to make them show and hide
+   need a method to add text to guide the user
+    */
+   redSlider=createSlider(0,255,100);
+   redSlider.position(width-105,20);
+   redSlider.style("width","100px");
+   greenSlider=createSlider(0,255,100);
+   greenSlider.position(width-105,40);
+   greenSlider.style("width","100px");
+   blueSlider=createSlider(0,255,100);
+   blueSlider.position(width-105,60);
+   blueSlider.style("width","100px");
 
 }
 function confetti()
@@ -26,10 +41,15 @@ function confetti()
     {
         push();
         translate(confLocs[i].x,confLocs[i].y,confLocs[i].z);
-        
+        noStroke();
         rotate(confTheta[i]);
         confTheta[i]+=10;
-        normalMaterial();
+        //ambientLight(50);
+        let direc=confLocs[i].copy(); //confLocs[i].z
+        directionalLight(255, 0, 130,
+            direc.normalize().x,1,direc.normalize().z);
+        //console.log(direc);
+        specularMaterial(255);
         plane(15);
         
         
@@ -47,6 +67,8 @@ function confetti()
 let locX;
 let locZ=800;
 function draw() {
+    
+  // noFill();
     locX=map(cos(frameCount/5),-1,1,-450,450);
     locZ=map(sin(frameCount/5),-1,1,-800,800);
     
@@ -69,9 +91,10 @@ function draw() {
         push();
            // stroke(0);
             //strokeWeight(2);
-            normalMaterial();
+           
             translate(i,0,j);
-            
+            directionalLight(redSlider.value(),greenSlider.value(),blueSlider.value(),0,1,0);
+            specularMaterial(255,50,100);
             // zero is the center for 3d coordination system
             let distance=dist(0,0,0,i,0,j);
             let length= map (sin(distance+frameCount),-1,1,100,300);
