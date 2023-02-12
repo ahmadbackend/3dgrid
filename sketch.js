@@ -43,11 +43,14 @@ function confetti()
         translate(confLocs[i].x,confLocs[i].y,confLocs[i].z);
         noStroke();
         rotate(confTheta[i]);
+        rotateX(confTheta[i]);
         confTheta[i]+=10;
         //ambientLight(50);
         let direc=confLocs[i].copy(); //confLocs[i].z
         directionalLight(255, 0, 130,
             direc.normalize().x,1,direc.normalize().z);
+            directionalLight(255, 0, 130,
+                direc.normalize().x,1,-direc.normalize().z);
         //console.log(direc);
         specularMaterial(255);
         plane(15);
@@ -75,10 +78,6 @@ function draw() {
    
     camera(locX, -600,locZ,0,0,0,0,1,0); 
    
-    
-   // console.log(locX);
-    perspective(90)
-
     background(125);
    
     for(let i=-450;i<450;i+=50)
@@ -93,7 +92,10 @@ function draw() {
             //strokeWeight(2);
            
             translate(i,0,j);
-            directionalLight(redSlider.value(),greenSlider.value(),blueSlider.value(),0,1,0);
+            directionalLight(redSlider.value(),greenSlider.value(),blueSlider.value(),0,1,-1);
+            directionalLight(redSlider.value(),greenSlider.value(),blueSlider.value(),0,1,1);
+
+
             specularMaterial(255,50,100);
             // zero is the center for 3d coordination system
             let distance=dist(0,0,0,i,0,j);
