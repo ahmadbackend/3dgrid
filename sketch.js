@@ -5,8 +5,31 @@ var setter;
 var redSlider;
 var greenSlider;
 var blueSlider;
+var font;
+let alphabet="dfghjklatyguiojpvbnm,lguhujiklbhjnkml".split("");
+
+function preload(){
+    font=loadFont('assets/fancy.otf');
+}
 function setup() {
     createCanvas(900, 800, WEBGL);
+    textFont(font);
+    console.log(alphabet);
+    textSize(32);
+    textAlign(CENTER, CENTER);
+    
+    let blue = createP('blue color');
+    blue.style('font-size', '16px');
+    blue.position(width, 45);
+    
+    let green = createP('green color');
+    green.style('font-size', '16px');
+    green.position(width, 25);
+    
+    let red = createP('red color');
+    red.style('font-size', '16px');
+    red.position(width, 10);
+    
     angleMode(DEGREES);
     for(let i=0;i<200;i++)
     {
@@ -33,42 +56,9 @@ function setup() {
    blueSlider.style("width","100px");
 
 }
-function confetti()
-{
-    downer= createVector(0,1,0);
-    setter=createVector(0,-800,0);
-    for(let i=0;i<confLocs.length;i++)
-    {
-        push();
-        translate(confLocs[i].x,confLocs[i].y,confLocs[i].z);
-        noStroke();
-        rotate(confTheta[i]);
-        rotateX(confTheta[i]);
-        confTheta[i]+=10;
-        //ambientLight(50);
-        let direc=confLocs[i].copy(); //confLocs[i].z
-        directionalLight(255, 0, 130,
-            direc.normalize().x,1,direc.normalize().z);
-            directionalLight(255, 0, 130,
-                direc.normalize().x,1,-direc.normalize().z);
-        //console.log(direc);
-        specularMaterial(255);
-        plane(15);
-        
-        
-       confLocs[i].add(downer);
-       if(confLocs[i].y>=height/2)
-       {
-           confLocs[i].add(setter);
-           //console.log(confLocs[i].y);
-       }
-       
-        pop();
-       
-    }
-}
+
 let locX;
-let locZ=800;
+let locZ;
 function draw() {
     
   // noFill();
@@ -79,7 +69,7 @@ function draw() {
     camera(locX, -600,locZ,0,0,0,0,1,0); 
    
     background(125);
-   
+  
     for(let i=-450;i<450;i+=50)
     {
       
@@ -111,3 +101,45 @@ function draw() {
     confetti();
 
 }
+function confetti()
+{
+    downer= createVector(0,1,0);
+    setter=createVector(0,-800,0);
+    for(let i=0;i<confLocs.length;i++)
+    {
+        push();
+        translate(confLocs[i].x,confLocs[i].y,confLocs[i].z);
+        noStroke();
+         push();
+        rotate(confTheta[i]);
+        rotateX(confTheta[i]);
+       // rotateZ(confTheta[i]);
+        confTheta[i]+=10;
+        
+        //ambientLight(50);
+        let direc=confLocs[i].copy(); //confLocs[i].z
+        directionalLight(255, 0, 130,
+            direc.normalize().x,1,direc.normalize().z);
+            directionalLight(255, 0, 130,
+                direc.normalize().x,1,-direc.normalize().z);
+        //console.log(direc);
+        specularMaterial(255);
+        plane(15);
+         pop();
+        //to create color contrast 
+        fill(255-redSlider.value(),255-greenSlider.value(),255-blueSlider.value())
+        text( String.fromCharCode(i*3),20,20);
+        noFill();
+        noStroke();
+       confLocs[i].add(downer);
+       if(confLocs[i].y>=height/2)
+       {
+           confLocs[i].add(setter);
+           //console.log(confLocs[i].y);
+       }
+       
+        pop();
+       
+    }
+}
+
